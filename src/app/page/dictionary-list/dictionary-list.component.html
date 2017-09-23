@@ -1,0 +1,10 @@
+<ul>
+  <li *ngFor="let item of dataService.dictList | async; let i = index">
+    {{ item.sort }}
+    <a href="javascript:void(0)" (click)="up(i)">up</a>
+    <a href="javascript:void(0)" (click)="down(i)">down</a>
+    <a href="javascript:void(0)" (click)="remove(i)">remove</a>
+    <input type="text" class="form-control" [(ngModel)]="item.name" (ngModelChange)="save(item)">
+    <input type="text" class="form-control" [(ngModel)]="item.url" (ngModelChange)="save(item)">
+  </li>
+</ul>
