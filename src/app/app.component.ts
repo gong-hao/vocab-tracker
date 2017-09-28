@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { DataService } from './service/data.service';
 
 @Component({
@@ -40,16 +40,17 @@ import { DataService } from './service/data.service';
   <audio id="tts"></audio>
   `
 })
-export class AppComponent {
+export class AppComponent implements OnInit, OnDestroy {
   keyword: string;
   subscribers = [];
 
-  constructor(
-    public dataService: DataService
-  ) {
-  }
+  constructor(public dataService: DataService) { }
 
   ngOnInit() {
+  }
+
+  ngOnDestroy() {
+    this.subscribers.forEach(x => x.unsubscribe());
   }
 
   search() {

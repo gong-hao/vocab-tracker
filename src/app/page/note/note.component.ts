@@ -32,6 +32,10 @@ export class NoteComponent implements OnInit, OnDestroy {
   how = '';
   saveStream = new Subject<string>();
   subscribers = [];
+  spellingTest = '';
+  spellingLog = [];
+  spellingStart;
+  spellingEnd;
 
   constructor(
     public sanitizer: DomSanitizer,
@@ -39,24 +43,19 @@ export class NoteComponent implements OnInit, OnDestroy {
   ) {
     document.body.addEventListener('keydown', (e) => {
       if (e.key === '1') {
-        Speaker.voice = 'usenglishfemale';
-        Speaker.say(this.target);
+        this.speak('usenglishfemale');
       }
       if (e.key === '2') {
-        Speaker.voice = 'usenglishmale';
-        Speaker.say(this.target);
+        this.speak('usenglishmale');
       }
       if (e.key === '3') {
-        Speaker.voice = 'ukenglishfemale';
-        Speaker.say(this.target);
+        this.speak('ukenglishfemale');
       }
       if (e.key === '4') {
-        Speaker.voice = 'ukenglishmale';
-        Speaker.say(this.target);
+        this.speak('ukenglishmale');
       }
       if (e.key === '5') {
-        Speaker.voice = 'SSU';
-        Speaker.say(this.target);
+        this.speak('SSU');
       }
       // if (e.key === 'ArrowLeft') {
       //   const i = this.wordList.findIndex(x => x.word === this.target);
@@ -75,6 +74,36 @@ export class NoteComponent implements OnInit, OnDestroy {
     });
   }
 
+  checkSpelling(event) {
+    if (!this.spellingStart && this.spellingTest.length > 0) {
+      this.spellingStart = new Date();
+    }
+    if (event.key !== 'Enter') {
+      return false;
+    }
+    if (this.spellingTest.length > 0) {
+      this.spellingEnd = new Date();
+    }
+    const seconds = (this.spellingEnd.getTime() - this.spellingStart.getTime()) / 1000;
+    const item = {
+      spelling: this.spellingTest,
+      correct: this.spellingTest === this.target,
+      seconds: seconds
+    };
+    this.spellingStart = null;
+    this.spellingEnd = null;
+    this.spellingLog.unshift(item);
+    const data = {
+      spellingLog: this.spellingLog
+    };
+    this.targetItem.update(data);
+  }
+
+  speak(name) {
+    Speaker.voice = name;
+    Speaker.say(this.target);
+  }
+
   ngOnInit() {
     this.subscribers.push(
       this.dataService.history.subscribe(x => {
@@ -88,23 +117,6 @@ export class NoteComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.subscribers.forEach(x => x.unsubscribe());
-  }
-
-  onKey(event) {
-    if (event.key === 'Enter') {
-      this.search();
-    }
-  }
-
-  search() {
-    this.target = this.keyword.trim();
-    if (this.wordList.find(x => x.word === this.target) === undefined) {
-      this.dataService.history.push({
-        word: this.target,
-        time: 0 - new Date().getTime()
-      });
-    }
-    this.setTarget(this.target);
   }
 
   setTarget(word) {
@@ -126,6 +138,8 @@ export class NoteComponent implements OnInit, OnDestroy {
           this.what = x.what || '';
           this.why = x.why || '';
           this.how = x.how || '';
+          this.spellingLog = x.spellingLog || [];
+          this.spellingTest = '';
         }
       }));
   }

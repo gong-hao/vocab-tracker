@@ -13,20 +13,10 @@
         </ul>
       </div>
     </div>
-    <div class="col-10">
+    <div class="col-10" *ngIf="target">
       <div class="row">
         <div class="col-12">
-          <div class="input-group">
-            <input type="text" class="form-control" placeholder="Search for..." [(ngModel)]="keyword" (keyup)="onKey($event)">
-            <span class="input-group-btn">
-              <button class="btn btn-danger" type="button" (click)="keyword = ''">x</button>
-            </span>
-            <span class="input-group-btn">
-              <button class="btn btn-success" type="button" (click)="search()">Go!</button>
-            </span>
-          </div>
-          <span>Target: {{ target }}</span>&nbsp;
-          <span class="badge badge-pill badge-info">{{ count }}</span>
+          <h1>{{ target }} <span class="badge badge-pill badge-info">{{ count }}</span></h1>
           <span *ngIf="target">
             <ng-template ngFor let-item let-last="last" [ngForOf]="dataService.dictList | async">
               <a [href]="getSrc(item.url)" target="_blank">{{ item.name }}</a>
@@ -36,7 +26,17 @@
         </div>
       </div>
       <div class="row">
+        <div class="col-12">
+          <button class="btn btn-default" (click)="speak('usenglishfemale')">US Female</button>
+          <button class="btn btn-default" (click)="speak('usenglishmale')">US Male</button>
+          <button class="btn btn-default" (click)="speak('ukenglishfemale')">UK Female</button>
+          <button class="btn btn-default" (click)="speak('ukenglishmale')">UK Male</button>
+          <button class="btn btn-default" (click)="speak('SSU')">SSU</button>
+        </div>
+      </div>
+      <div class="row">
         <div class="col-9">
+          <input type="text" class="form-control" placeholder="spelling test" [(ngModel)]="spellingTest" (keyup)="checkSpelling($event)">
           <textarea cols="30" rows="5" class="form-control" [(ngModel)]="translatedExplanation" (keyup)="saveStream.next()" placeholder="Translated Explanation"></textarea>
           <textarea cols="30" rows="5" class="form-control" [(ngModel)]="originalExplanation" (keyup)="saveStream.next()" placeholder="Original Explanation"></textarea>
           <textarea cols="30" rows="10" class="form-control" [(ngModel)]="examples" (keyup)="saveStream.next()" placeholder="Examples"></textarea>
@@ -65,6 +65,13 @@
           <ng-template ngFor let-item [ngForOf]="dataService.howTags | async">
             <span class="badge badge-default" (click)="appendTag('how', item.tag);saveNote();">{{ item.tag }}</span>
           </ng-template>
+          <hr>
+          <ol>
+            <li *ngFor="let item of spellingLog" [ngClass]="{
+              'text-success': item.correct,
+              'text-danger': !item.correct
+            }">{{ item.spelling }} ({{ item.seconds }})</li>
+          </ol>
         </div>
       </div>
     </div>

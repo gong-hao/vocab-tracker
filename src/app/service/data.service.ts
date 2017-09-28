@@ -57,6 +57,10 @@ export class DataService {
     // setTimeout(() => {
     //   this.initTags();
     // }, 1000);
+
+    this.history.subscribe(x => {
+      this.historyList = x;
+    });
   }
 
   initTags() {
