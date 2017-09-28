@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { DataService } from './service/data.service';
 
 @Component({
   selector: 'app-root',
@@ -22,16 +23,43 @@ import { Component } from '@angular/core';
           <a class="nav-link" routerLinkActive="active" [routerLink]="['dict-list']">Dictionary List</a>
         </li>
       </ul>
-      <!--
-      <form class="form-inline my-2 my-lg-0">
-        <input class="form-control mr-sm-2" type="text" placeholder="Search">
-        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+      <form class="form-inline">
+        <div class="input-group">
+          <input class="form-control" type="text" placeholder="Search" [(ngModel)]="keyword" name="keyword">
+          <span class="input-group-btn">
+            <button class="btn btn-danger" type="button" (click)="keyword = ''">x</button>
+          </span>
+          <span class="input-group-btn">
+            <button class="btn btn-success" type="submit" (click)="search()">Go!</button>
+          </span>
+        </div>
       </form>
-      -->
     </div>
   </nav>
   <router-outlet></router-outlet>
   <audio id="tts"></audio>
   `
 })
-export class AppComponent { }
+export class AppComponent {
+  keyword: string;
+  subscribers = [];
+
+  constructor(
+    public dataService: DataService
+  ) {
+  }
+
+  ngOnInit() {
+  }
+
+  search() {
+    this.dataService.target = this.keyword.trim();
+    if (this.dataService.historyList.find(x => x.word === this.dataService.target) === undefined) {
+      this.dataService.history.push({
+        word: this.dataService.target,
+        time: 0 - new Date().getTime()
+      });
+    }
+    this.dataService.setTarget();
+  }
+}

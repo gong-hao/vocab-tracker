@@ -16,7 +16,7 @@ import { DataService } from './service/data.service';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { RepositoryComponent } from './page/repository/repository.component';
-import { HistoryComponent } from './page/history/history.component';
+import { NoteComponent } from './page/note/note.component';
 import { DictionaryListComponent } from './page/dictionary-list/dictionary-list.component';
 import { AToZListComponent } from './component/a-to-z-list/a-to-z-list.component';
 import { VerticalListComponent } from './component/vertical-list/vertical-list.component';
@@ -34,7 +34,7 @@ export const firebaseConfig = {
 @NgModule({
   declarations: [
     AppComponent,
-    HistoryComponent,
+    NoteComponent,
     AToZListComponent,
     VerticalListComponent,
     BlockListComponent,

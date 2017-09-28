@@ -7,6 +7,9 @@ import 'rxjs/add/operator/first';
 
 @Injectable()
 export class DataService {
+  target: string;
+  historyList = [];
+
   history: FirebaseListObservable<any[]>;
   dictList: FirebaseListObservable<any[]>;
   whereTags: FirebaseListObservable<any[]>;
@@ -120,5 +123,9 @@ export class DataService {
       obj.update({ count: x.count ? x.count + 1 : 1 });
     });
     return obj;
+  }
+
+  setTarget() {
+
   }
 }

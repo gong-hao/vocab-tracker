@@ -9,15 +9,15 @@ import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/debounceTime';
 
 @Component({
-  selector: 'app-history',
-  templateUrl: './history.component.html',
-  styleUrls: ['./history.component.css']
+  selector: 'app-note',
+  templateUrl: './note.component.html',
+  styleUrls: ['./note.component.css']
 })
-export class HistoryComponent implements OnInit, OnDestroy {
+export class NoteComponent implements OnInit, OnDestroy {
   keyword: string;
   target = '';
   targetItem: any;
-  historyList: any[] = [];
+  wordList: any[] = [];
   showRemove = false;
   count = 0;
   translatedExplanation = '';
@@ -58,27 +58,27 @@ export class HistoryComponent implements OnInit, OnDestroy {
         Speaker.voice = 'SSU';
         Speaker.say(this.target);
       }
-      if (e.key === 'ArrowLeft') {
-        const i = this.historyList.findIndex(x => x.word === this.target);
-        if (i !== -1 && i !== 0) {
-          const pre = this.historyList[i - 1].word;
-          this.setTarget(pre);
-        }
-      }
-      if (e.key === 'ArrowRight') {
-        const i = this.historyList.findIndex(x => x.word === this.target);
-        if (i !== -1 && i !== this.historyList.length - 1) {
-          const next = this.historyList[i + 1].word;
-          this.setTarget(next);
-        }
-      }
+      // if (e.key === 'ArrowLeft') {
+      //   const i = this.wordList.findIndex(x => x.word === this.target);
+      //   if (i !== -1 && i !== 0) {
+      //     const pre = this.wordList[i - 1].word;
+      //     this.setTarget(pre);
+      //   }
+      // }
+      // if (e.key === 'ArrowRight') {
+      //   const i = this.wordList.findIndex(x => x.word === this.target);
+      //   if (i !== -1 && i !== this.wordList.length - 1) {
+      //     const next = this.wordList[i + 1].word;
+      //     this.setTarget(next);
+      //   }
+      // }
     });
   }
 
   ngOnInit() {
     this.subscribers.push(
       this.dataService.history.subscribe(x => {
-        this.historyList = x;
+        this.wordList = x;
       }));
     this.subscribers.push(
       this.saveStream
@@ -98,7 +98,7 @@ export class HistoryComponent implements OnInit, OnDestroy {
 
   search() {
     this.target = this.keyword.trim();
-    if (this.historyList.find(x => x.word === this.target) === undefined) {
+    if (this.wordList.find(x => x.word === this.target) === undefined) {
       this.dataService.history.push({
         word: this.target,
         time: 0 - new Date().getTime()

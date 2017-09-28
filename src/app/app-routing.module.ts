@@ -1,5 +1,5 @@
 import { RepositoryComponent } from './page/repository/repository.component';
-import { HistoryComponent } from './page/history/history.component';
+import { NoteComponent } from './page/note/note.component';
 import { DictionaryListComponent } from './page/dictionary-list/dictionary-list.component';
 import { LoginAuth } from './login.auth';
 import { NgModule } from '@angular/core';
@@ -13,7 +13,7 @@ const routes: Routes = [
   },
   {
     path: 'history',
-    component: HistoryComponent,
+    component: NoteComponent,
     canActivate: [LoginAuth]
   },
   {
