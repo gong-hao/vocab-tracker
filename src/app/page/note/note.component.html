@@ -43,25 +43,25 @@
           <textarea cols="30" rows="10" class="form-control" [(ngModel)]="note" (keyup)="saveStream.next()" placeholder="Note"></textarea>
         </div>
         <div class="col-3">
-          <input type="text" class="form-control" [(ngModel)]="when" (keyup)="saveStream.next()" placeholder="When did you encounter it?">
+          <input type="text" class="form-control" [(ngModel)]="when" (keyup)="saveStream.next()" placeholder="When did you encounter it?" title="When did you encounter it?">
           <span class="badge badge-default" (click)="setToday()">today</span>
-          <input type="text" class="form-control" [(ngModel)]="where" (keyup)="saveStream.next()" placeholder="Where did you find it?">
+          <input type="text" class="form-control" [(ngModel)]="where" (keyup)="saveStream.next()" placeholder="Where did you find it?" title="Where did you find it?">
           <ng-template ngFor let-item [ngForOf]="dataService.whereTags | async">
             <span class="badge badge-default" (click)="appendTag('where', item.tag);saveNote();">{{ item.tag }}</span>
           </ng-template>
-          <input type="text" class="form-control" [(ngModel)]="what" (keyup)="saveStream.next()" placeholder="What did you do around it?">
+          <input type="text" class="form-control" [(ngModel)]="what" (keyup)="saveStream.next()" placeholder="What did you do around it?" title="What did you do around it?">
           <ng-template ngFor let-item [ngForOf]="dataService.whatTags | async">
             <span class="badge badge-default" (click)="appendTag('what', item.tag);saveNote();">{{ item.tag }}</span>
           </ng-template>
-          <input type="text" class="form-control" [(ngModel)]="who" (keyup)="saveStream.next()" placeholder="Who did you talk with it?">
+          <input type="text" class="form-control" [(ngModel)]="who" (keyup)="saveStream.next()" placeholder="Who did you talk with it?" title="Who did you talk with it?">
           <ng-template ngFor let-item [ngForOf]="dataService.whoTags | async">
             <span class="badge badge-default" (click)="appendTag('who', item.tag);saveNote();">{{ item.tag }}</span>
           </ng-template>
-          <input type="text" class="form-control" [(ngModel)]="why" (keyup)="saveStream.next()" placeholder="Why did you need to know it?">
+          <input type="text" class="form-control" [(ngModel)]="why" (keyup)="saveStream.next()" placeholder="Why did you need to know it?" title="Why did you need to know it?">
           <ng-template ngFor let-item [ngForOf]="dataService.whyTags | async">
             <span class="badge badge-default" (click)="appendTag('why', item.tag);saveNote();">{{ item.tag }}</span>
           </ng-template>
-          <input type="text" class="form-control" [(ngModel)]="how" (keyup)="saveStream.next()" placeholder="How did you use it?">
+          <input type="text" class="form-control" [(ngModel)]="how" (keyup)="saveStream.next()" placeholder="How did you use it?" title="How did you use it?">
           <ng-template ngFor let-item [ngForOf]="dataService.howTags | async">
             <span class="badge badge-default" (click)="appendTag('how', item.tag);saveNote();">{{ item.tag }}</span>
           </ng-template>
