@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { AngularFireDatabase, FirebaseListObservable } from 'angularfire2/database';
+import { AngularFireDatabase, FirebaseListObservable, FirebaseObjectObservable } from 'angularfire2/database';
 import { AngularFireAuth } from 'angularfire2/auth';
 import { Observable } from 'rxjs/Observable';
 import * as firebase from 'firebase/app';
@@ -9,7 +9,9 @@ import 'rxjs/add/operator/first';
 export class DataService {
   target: string;
   historyList = [];
+  allWords = [];
 
+  words: FirebaseObjectObservable<any>;
   history: FirebaseListObservable<any[]>;
   dictList: FirebaseListObservable<any[]>;
   whereTags: FirebaseListObservable<any[]>;
@@ -54,12 +56,19 @@ export class DataService {
         orderByChild: 'sort'
       }
     });
-    // setTimeout(() => {
-    //   this.initTags();
-    // }, 1000);
+    this.words = af.object('/words');
 
     this.history.subscribe(x => {
       this.historyList = x;
+    });
+    this.words.subscribe(x => {
+      this.allWords = [];
+      Object
+        .keys(x)
+        .sort((a, b) => a.localeCompare(b))
+        .forEach(name => {
+          this.allWords.push(x[name]);
+        });
     });
   }
 

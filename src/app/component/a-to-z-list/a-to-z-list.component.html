@@ -1,3 +1,15 @@
-<p>
-  a-to-z-list works!
-</p>
+<i class="fa fa-trash-o" aria-hidden="true" (click)="showRemove = !showRemove"></i>
+<ul class="list-group">
+  <ng-template ngFor let-item let-i="index" [ngForOf]="dataService.allWords">
+    <li class="list-group-item" style="display:inline-block"
+      *ngIf="isFirstWord(item.word, i)">
+      <input type="checkbox" #letterChecker (click)="selectLetter(item.word[0], letterChecker.checked)">
+      <h1 style="display:inline-block">{{ item.word[0].toUpperCase() }} <span class="badge badge-pill badge-info">{{ count(item.word[0]) }}</span></h1>
+    </li>
+    <li class="list-group-item" style="display:inline-block">
+      <input type="checkbox" [(ngModel)]="item.checked">
+      <span class="history-words">{{ item.word }}</span>
+      <a class="text-danger float-right" href="javascript:void(0)" *ngIf="showRemove" (click)="remove(item)"> x </a>
+    </li>
+  </ng-template>
+</ul>
