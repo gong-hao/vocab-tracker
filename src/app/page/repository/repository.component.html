@@ -1,4 +1,12 @@
-<button class="btn btn-info">a to z</button>
-<button class="btn btn-info">block</button>
-<button class="btn btn-info">vertical</button>
-<app-a-to-z-list></app-a-to-z-list>
+<button class="btn btn-info" (click)="display = 'a-to-z'">a to z</button>
+<button class="btn btn-info" (click)="display = 'block'">block</button>
+<button class="btn btn-info" (click)="display = 'vertical'">vertical</button>
+<i class="fa fa-trash-o" aria-hidden="true" (click)="showRemove = !showRemove"></i>
+<br>
+<div class="input-group">
+  <input type="text" class="form-control" [(ngModel)]="tagName" placeholder="Tag Name">
+  <span class="input-group-btn">
+    <button class="btn btn-success" type="button" (click)="setTag()">Set Tag</button>
+  </span>
+</div>
+<app-a-to-z-list *ngIf="display === 'a-to-z'" [showRemove]="showRemove"></app-a-to-z-list>

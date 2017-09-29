@@ -10,8 +10,11 @@ export class DataService {
   target: string;
   historyList = [];
   allWords = [];
+  allTags = [];
 
   words: FirebaseObjectObservable<any>;
+  tags: FirebaseObjectObservable<any[]>;
+
   history: FirebaseListObservable<any[]>;
   dictList: FirebaseListObservable<any[]>;
   whereTags: FirebaseListObservable<any[]>;
@@ -56,6 +59,7 @@ export class DataService {
         orderByChild: 'sort'
       }
     });
+    this.tags = af.object('/tags');
     this.words = af.object('/words');
 
     this.history.subscribe(x => {
@@ -68,6 +72,15 @@ export class DataService {
         .sort((a, b) => a.localeCompare(b))
         .forEach(name => {
           this.allWords.push(x[name]);
+        });
+    });
+    this.tags.subscribe(x => {
+      this.allTags = [];
+      Object
+        .keys(x)
+        .sort((a, b) => a.localeCompare(b))
+        .forEach(name => {
+          this.allTags.push(x[name]);
         });
     });
   }
@@ -133,8 +146,14 @@ export class DataService {
   getWord(word) {
     const obj = this.af.object('words/' + word);
     obj.first().subscribe(x => {
-      obj.update({ count: x.count ? x.count + 1 : 1 });
+      const count = x.count ? x.count + 1 : 1;
+      obj.update({ count: count });
     });
+    return obj;
+  }
+
+  getTag(tag) {
+    const obj = this.af.object('tags/' + tag);
     return obj;
   }
 

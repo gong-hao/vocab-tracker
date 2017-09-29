@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { DataService } from '../../service/data.service';
 
 @Component({
@@ -7,7 +7,7 @@ import { DataService } from '../../service/data.service';
   styleUrls: ['./a-to-z-list.component.css']
 })
 export class AToZListComponent implements OnInit {
-  showRemove = false;
+  @Input() showRemove = false;
   constructor(public dataService: DataService) { }
 
   ngOnInit() {
@@ -43,7 +43,7 @@ export class AToZListComponent implements OnInit {
 
   selectLetter(letter, checked) {
     this.dataService.allWords.forEach(x => {
-      if (x.word[0].toLowerCase() === letter.toLowerCase()) {
+      if (!letter || x.word[0].toLowerCase() === letter.toLowerCase()) {
         x.checked = checked;
       }
     });

@@ -1,15 +1,27 @@
-<i class="fa fa-trash-o" aria-hidden="true" (click)="showRemove = !showRemove"></i>
 <ul class="list-group">
+  <li class="list-group-item">
+    <input type="checkbox" #allChecker (click)="selectLetter(null, allChecker.checked)">
+    <h3 style="display:inline-block;margin-bottom:0">All <span class="badge badge-pill badge-info">{{ dataService.allWords.length }}</span></h3>
+  </li>
   <ng-template ngFor let-item let-i="index" [ngForOf]="dataService.allWords">
-    <li class="list-group-item" style="display:inline-block"
-      *ngIf="isFirstWord(item.word, i)">
-      <input type="checkbox" #letterChecker (click)="selectLetter(item.word[0], letterChecker.checked)">
-      <h1 style="display:inline-block">{{ item.word[0].toUpperCase() }} <span class="badge badge-pill badge-info">{{ count(item.word[0]) }}</span></h1>
+    <li class="list-group-item" *ngIf="isFirstWord(item.word, i)">
+      <h3 style="display:inline-block;margin-bottom:0">
+        <input type="checkbox" #letterChecker (click)="selectLetter(item.word[0], letterChecker.checked)">
+        {{ item.word[0].toUpperCase() }}
+        <span class="badge badge-pill badge-info">{{ count(item.word[0]) }}</span>
+      </h3>
     </li>
-    <li class="list-group-item" style="display:inline-block">
-      <input type="checkbox" [(ngModel)]="item.checked">
-      <span class="history-words">{{ item.word }}</span>
+    <li class="list-group-item">
+      <h5 class="history-words" style="display:inline-block;margin-bottom:0">
+        <input type="checkbox" [(ngModel)]="item.checked">
+        {{ item.word }}
+        <span class="badge badge-pill badge-success">
+          <i class="fa fa-eye" aria-hidden="true"></i>
+          {{ item.count }}
+        </span>
+      </h5>
       <a class="text-danger float-right" href="javascript:void(0)" *ngIf="showRemove" (click)="remove(item)"> x </a>
     </li>
   </ng-template>
 </ul>
+
